@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Domain2</title>
+    <script type="text/javascript">
+      window.onload = function() {
+
+        // Get div to retrieve message from domain1
+        var messageDivFromDomain1 = document.getElementById('messageFromDomain1');
+
+        // Get poke button
+        var pokeButton = document.getElementById('poke');
+
+        // When the pokebutton is clicked.
+        pokeButton.addEventListener('click', sendMessage);
+
+        // When receive message from domain1
+        window.addEventListener('message', receiveMessage);
+
+        // A function to receive messages from domain1.
+        function receiveMessage(e) {
+          console.log(e);
+          // Here is setted to null cause it's from local file, if we want to secure we only have to set the right domain instead of null
+          // if (e.origin !== "null") return;
+
+          // Show message from domain1
+          messageDivFromDomain1.innerHTML = e.data;
+        }
+
+        // A function to send message to domain1.
+        function sendMessage(e) {
+          e.preventDefault();
+
+          // Send a message to domain1, specify * to all accept all domain
+          window.parent.postMessage('Hello World from domain2', '*');
+        }
+            
+      }
+    </script>
+  </head>
+  
+  <body>
+    <h1>Iframe Domain2</h1>
+    <p>
+      <button id="poke">Envoyer un poke à domain1</button>
+    </p>
+
+    <div id="messageFromDomain1"></div>
+  </body>
+
+</html>
